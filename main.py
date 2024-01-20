@@ -1,3 +1,4 @@
+import asyncio
 from bot.bot_controller import BotController
 from utils.env import DotEnvLoader
 
@@ -14,7 +15,7 @@ def __main():
     global bot_controller
     
     __instance_init()
-    bot_controller.run_bot()
+    asyncio.run(bot_controller.run_bot())
     return
 
 if __name__ == "__main__":
