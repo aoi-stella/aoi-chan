@@ -1,24 +1,21 @@
-import discord
-import os
-from log import log
-from log import LogLevel
-from dotenv import load_dotenv
+from bot.bot_controller import BotController
+from utils.env import DotEnvLoader
 
-load_dotenv()
-client = discord.Client(intents=discord.Intents.all())
+bot_controller: BotController = None
 
-TOKEN = os.getenv('TOKEN')
+def __instance_init():
+    global bot_controller
+    
+    DotEnvLoader.load_env("./.env")
+    bot_controller = BotController()
+    return
 
-@client.event
-async def on_ready():
-    log("初期化完了", LogLevel.INFO)
+def __main():
+    global bot_controller
+    
+    __instance_init()
+    bot_controller.run_bot()
+    return
 
-@client.event
-async def on_message(message):
-    if message.author.bot:
-        return
-    if message.content == "ping":
-        # Send a reply with a mention to the sender
-        await message.channel.send(f"{message.author.mention} pong")
-        
-client.run(TOKEN)
+if __name__ == "__main__":
+    __main()
